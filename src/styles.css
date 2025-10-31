@@ -1,0 +1,292 @@
+/* ========== CSS RESET (lightweight) ========== */
+/* Target ALL elements (*) And their pseudo-elements (::before and ::after) This ensures that every element on the page uses the same "box-sizing" model. */
+/* By default, width/height only include content box. 'border-box' changes that: width = content + padding + border. This makes layouts easier and more predictable.*/
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+/* Set the <html> and <body> elements to full height (100% of viewport). Useful when make sections span full screen height.*/
+html, body { height: 100%; }
+
+/* Body defaults:
+- margin: 0 (Remove default browser margin, most browsers add ~8px by default)
+- line-height: 1.5 (Improve text spacing, makes text more readable)
+- webkit-font-smoothing: antialiased (Enable smoother font rendering on macOS / WebKit browsers.)
+*/
+body { margin: 0; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+/* Media elements (img, picture, video, canvas, svg):
+- Force them to behave like block elements (not inline) so that extra whitespace below images disappears.
+- Limit width to 100% of their parent container (so they shrink on small screens but never overflow).
+*/
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+
+/* Form elements: input, button, textarea, select
+- Inherit font styles from parent (body or container)
+- This ensures consistent font size and family across the app because browsers often apply their own default fonts to form controls.
+*/
+input, button, textarea, select { font: inherit; }
+
+/* Custom CSS variables: These are global values that can be reused anywhere.
+    The :root selector targets the <html> element, so variables defined here are accessible across the entire stylesheet.
+*/
+:root 
+{
+    /* Color system */
+    --navy-900: #233142;    /* hero background */
+    --navy-800: #2b3a4d;    /* focus ring/hover tint */
+    --bg: #f3f5f7;          /* page background */
+    --card: #ffffff;        /* card background */
+    --text: #1f2937;        /* primary text */
+    --muted: #4b5563;       /* secondary text */
+    --accent: #1d4ed8;      /* buttons / focus */
+    --accent-600: #1842b8;
+
+    /* Defines a soft drop shadow effect.
+    - Each shadow layer is separated by a comma.
+    - Format: offset-x offset-y blur-radius color
+    - rgba(0,0,0,.08) semi-transparent black shadow 
+        First shadow: 0 (x offset), 10px (y offset), 30px (blur), 8% opacity
+        Second shadow: 0 (x offset), 2px (y offset), 8px (blur), 6% opacity
+    */
+    --shadow: 0 10px 30px rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.06);
+
+    /* Large corner radius for cards or buttons.Makes edges smoothly rounded modern, friendly UI style.*/
+    --radius-lg: 18px;
+
+    /* Medium corner radius slightly smaller rounding. Often used for nested elements like images inside cards, so the curvature visually matches without overflowing.*/
+    --radius-md: 12px;
+
+    /* Defines the maximum width for main content areas.Ensures the layout does not stretch too wide on large screens. 1280px is a standard desktop container width in responsive design.*/
+    --container-max: 1280px;
+}
+
+/* ====== Typography ====== */
+/* Sets the font stack (order of preference) for all text inside <body>.The browser will try each font in order until it finds one installed on the system. 
+This ensures consistent, native-looking typography across different operating systems.
+*/
+body 
+{
+    font-family: system-ui, /* Uses the system default UI font (e.g., San Francisco on macOS, Segoe UI on Windows) */
+    -apple-system,          /* Specific name for Apple's system font (backwards compatibility for Safari/macOS) */
+    Segoe UI,               /* Windows system font (used in modern Windows UI) */
+    Roboto,                 /* Android and Google preferred system font */
+    Helvetica,              /* Common macOS/Linux sans-serif font */
+    Arial,                  /* Very common web-safe sans-serif font */
+    "Apple Color Emoji",    /* Apple color emoji font for macOS/iOS */
+    "Segoe UI Emoji",       /* Windows emoji font */
+    "Segoe UI Symbol";      /* Fallback for symbols and icons on Windows */
+    color: var(--text);     /* Sets text color (foreground) for everything in the body. `var(--text)` :a CSS custom property (variable) defined somewhere else in the stylesheet. */
+    background: var(--bg); /* Sets background color of the page.*/
+}
+
+/* ====== Hero Header ====== */
+/* The hero section top padding grows/shrinks smoothly depending on screen size modern responsive design technique.
+*/
+.hero 
+{
+    background: var(--navy-900);
+    color: #fff;
+
+    /* Padding shorthand: top | left-right | bottom clamp(min, preferred, max), clamp() makes the padding responsive to viewport width.
+    top: between 28px and 48px, scaling at 4vw (4% of viewport width) left/right: 16px bottom: 28px
+    */
+    padding: clamp(28px, 4vw, 48px) 16px 28px;
+    text-align: center;                         /* Centers all text inside this section horizontally. */
+
+    /* Adds a subtle inner shadow line along the bottom edge of the hero section.
+    - 'inset' means the shadow is drawn inside the element (not outside).
+    - 0 -1px 0 means:
+        x-offset = 0 (no horizontal shift)
+        y-offset = -1px (slightly upward inside the box)
+        blur = 0 (sharp edge)
+    - rgba(255,255,255,.06) gives a faint translucent white line.
+    */
+    box-shadow: inset 0 -1px 0 rgba(255,255,255,.06);
+}
+
+.hero__title 
+{
+    font-size: clamp(34px, 4.4vw, 56px);        /* Sets the font size responsively using clamp().
+                                                    clamp(min, preferred, max)
+                                                    - min: 34px (small screens)
+                                                    - preferred: 4.4vw (4.4% of viewport
+                                                    width)
+                                                    - max: 56px (large screens)
+                                                    The font size automatically scales with
+                                                    the screen width,
+                                                    so the title always looks balanced not
+                                                    too large on phones,
+                                                    not too small on wide monitors.
+                                                    */
+    font-weight: 800;                           /* Common values: 400 (normal), 700 (bold), 800 (extra bold).*/
+    letter-spacing: .02em;                      /* increases spacing between letters (2% of the current font size).*/
+    
+    margin: 8px 0 18px;                         /* Adds vertical spacing around the title:
+                                                    top margin: 8px
+                                                    right/left: 0
+                                                    bottom: 18px
+                                                    This creates visual breathing room above and below
+                                                    the heading.
+                                                    */
+}
+
+/* ====== Controls Row ====== */
+.controls 
+{
+    display: flex;                  /* Enables Flexbox layout on the container.
+                                    This turns all direct child elements (like <input> and <select>) into flex items that can be aligned and spaced easily.
+                                    Without this, child elements would stack normally like block elements.
+                                    */
+    justify-content: center;        /* Centers all child items horizontally (main axis).*/
+    
+    align-items: center;            /* Centers all child items vertically (cross axis).
+                                    Since the container is a single flex row, this makes the elements (e.g. search box and dropdown) align neatly along the same vertical line.
+                                    */
+    gap: 14px;
+    flex-wrap: wrap;                /* Allows the flex items to wrap to the next line if they dont fit on one line.
+                                    This makes the layout responsive so on smaller screens, the controls can stack vertically instead of shrinking too small.
+                                    */
+    max-width: var(--container-max);/* Limits the total width of the controls row.
+                                    var(--container-max) is a CSS variable defined elsewhere, This ensures the layout doesnt stretch too wide on huge monitors.
+                                    */
+    margin-inline: auto;            /* Centers the .controls container itself within its parent by setting automatic left and right margins.
+                                    The shorthand margin-inline: auto; is a logical property, equivalent to: margin-left: auto; margin-right: auto;
+                                    Its better for supporting both left-to-right (LTR) and right-to-left (RTL) languages.
+                                    */
+}
+
+.input,
+.select 
+{
+    border: none;
+    outline: none;
+    border-radius: 999px;
+    padding: 14px 18px;
+    min-width: min(480px, 80vw);
+    max-width: 90vw;
+    background: #fff;
+    color: #111827;
+    box-shadow: var(--shadow);
+}
+
+.select 
+{
+    min-width: 220px;
+}
+
+/* Show focus for a11y */
+.input:focus,
+.select:focus,
+.btn:focus 
+{
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ====== Layout container ====== */
+.container
+{
+    max-width: var(--container-max);
+    margin: 22px auto 60px;
+    padding: 0 18px;
+}
+
+/* ====== Grid of movie cards ====== */
+.grid 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 26px;
+}
+.card 
+{
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.card:hover 
+{
+    transform: translateY(-3px);
+    box-shadow: 0 14px 38px rgba(0,0,0,.12), 0 4px 16px rgba(0,0,0,.08);
+}
+.card__poster 
+{
+    border-radius: var(--radius-md);
+    width: 100%;
+    aspect-ratio: 2 / 3; /* keeps posters consistent */
+    object-fit: cover;
+    background: #e5e7eb;
+}
+.card__title 
+{
+    margin: 16px 0 8px;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: .01em;
+    text-wrap: balance;
+    text-align: center;
+}
+.card__meta 
+{
+    font-weight: 600;
+    color: var(--muted);
+    margin: 6px 0;
+    text-align: center;
+}
+
+/* ====== Pagination ====== */
+.pagination 
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-top: 28px;
+}
+.btn 
+{
+    appearance: none;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: filter 140ms ease, background 140ms ease, transform 120ms ease;
+}
+.btn:hover { filter: brightness(1.06); }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] 
+{
+    opacity: .45;
+    cursor: not-allowed;
+    background: var(--accent-600);
+}
+.page-label 
+{
+    font-weight: 800;
+    color: var(--muted);
+}
+
+/* ====== Status / messages ====== */
+.status 
+{
+    text-align: center;
+    color: var(--muted);
+    margin: 22px 0 8px;
+}
+
+/* ====== Screen-reader only (for accessible labels) ====== */
+.sr-only 
+{
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border: 0;
+}
