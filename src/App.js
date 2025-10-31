@@ -18,8 +18,7 @@ export default function App() {
 
   useEffect(() => 
   {
-    fetchMovies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchMovies();    
   }, [page, query, sort]);
 
   const fetchMovies = async () => 
